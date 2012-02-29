@@ -16,20 +16,29 @@ class Namegen(object):
             self.prob, self.sums = self.load_arrays()
 
     def load_arrays(self):
+        """
+        Loads the numpy array from the pickled file on disk
+        """
         with open(Namegen.PROB_PATH, 'rb') as prob_file:
             return pickle.load(prob_file)
 
     def save_arrays(self):
+        """
+        Pickles the numpy array to disk
+        """
         with open(Namegen.PROB_PATH, 'wb') as prob_file:
             pickle.dump((self.prob, self.sums), prob_file, pickle.HIGHEST_PROTOCOL)
 
     def to_ordinal(self, c):
         """
-
+        Converts the char c to its appropriate index in numpy array.
         """
         return 0 if c == ' ' else ord(c.lower()) - 96
 
     def bi_to_ordinal(self, bi):
+        """
+        Converts the string bi to the proper row index in the numpy array.
+        """
         return 27 * self.to_ordinal(bi[0]) + self.to_ordinal(bi[1])
 
     def from_ordinal(self, i):
