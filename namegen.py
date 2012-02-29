@@ -23,6 +23,9 @@ class Namegen(object):
             pickle.dump((self.prob, self.sums), prob_file, pickle.HIGHEST_PROTOCOL)
 
     def to_ordinal(self, c):
+        """
+
+        """
         return 0 if c == ' ' else ord(c.lower()) - 96
 
     def bi_to_ordinal(self, bi):
@@ -63,13 +66,19 @@ class Namegen(object):
 
 
     def generate(self):
+        """
+        Generates a name.
+        """
         name = '  '
-        name += self.pick_char(name[-2:])
-        while name[-1] != ' ':
+        while True:
             name += self.pick_char(name[-2:])
-        return name.strip().capitalize()
+            if name[-1] == ' ':
+                return name.strip().capitalize()
 
     def generate_clean(self):
+        """
+        Generates a name with length between 4 and 8.
+        """
         while True:
             name = self.generate()
             if 4 <= len(name) <= 8:
@@ -78,5 +87,4 @@ class Namegen(object):
 
 if __name__ == '__main__':
     generator = Namegen()
-    for i in xrange(100):
-        print(generator.generate_clean())
+    print(generator.generate_clean())
