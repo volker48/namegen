@@ -3,6 +3,7 @@ import numpy
 import os
 import random
 import cPickle as pickle
+import argparse
 
 class Namegen(object):
     PROB_PATH = 'prob.pickle'
@@ -39,6 +40,10 @@ class Namegen(object):
             return self.create_prob(file)
 
     def create_prob(self, file):
+        """
+        Creates the numpy array that holds the number of occurrences of the
+        bigrams.
+        """
         prob = numpy.zeros((729, 27), dtype=numpy.int16)
         for line in file:
             line = line.rstrip()
@@ -53,6 +58,9 @@ class Namegen(object):
         return prob, numpy.sum(prob, axis=1)
 
     def pick_char(self, previous):
+        """
+        Picks the next character given the previous bigram.
+        """
         ordinal = self.bi_to_ordinal(previous)
         total = self.sums[ordinal]
         if not total:
@@ -67,7 +75,7 @@ class Namegen(object):
 
     def generate(self):
         """
-        Generates a name.
+        Generates a random name.
         """
         name = '  '
         while True:
@@ -77,7 +85,7 @@ class Namegen(object):
 
     def generate_clean(self):
         """
-        Generates a name with length between 4 and 8.
+        Generates a random name with length between 4 and 8.
         """
         while True:
             name = self.generate()
@@ -86,5 +94,9 @@ class Namegen(object):
 
 
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='Namegen: Random name generator.')
+    parser.add_argument('-n', dest='count', type=int, default=1, help='The number of names to generate')
+    args = parser.parse_args()
     generator = Namegen()
-    print(generator.generate_clean())
+    for i in xrange(args.count):
+        print(generator.generate_clean())
