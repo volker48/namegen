@@ -1,24 +1,25 @@
+#!/usr/bin/env python
 import numpy
 import os
 import random
 import cPickle as pickle
 
-PROB_PATH = 'prob.pickle'
-
 class Namegen(object):
-    def __init__(self):
-        if not os.path.exists(PROB_PATH):
-            self.prob, self.sums = self.read_corpus('male.txt')
+    PROB_PATH = 'prob.pickle'
+
+    def __init__(self, corpus='male.txt'):
+        if not os.path.exists(Namegen.PROB_PATH):
+            self.prob, self.sums = self.read_corpus(corpus)
             self.save_arrays()
         else:
             self.prob, self.sums = self.load_arrays()
 
     def load_arrays(self):
-        with open(PROB_PATH, 'r') as prob_file:
+        with open(Namegen.PROB_PATH, 'rb') as prob_file:
             return pickle.load(prob_file)
 
     def save_arrays(self):
-        with open(PROB_PATH, 'wb') as prob_file:
+        with open(Namegen.PROB_PATH, 'wb') as prob_file:
             pickle.dump((self.prob, self.sums), prob_file, pickle.HIGHEST_PROTOCOL)
 
     def to_ordinal(self, c):
@@ -68,10 +69,14 @@ class Namegen(object):
             name += self.pick_char(name[-2:])
         return name.strip().capitalize()
 
-
-
+    def generate_clean(self):
+        while True:
+            name = self.generate()
+            if 4 <= len(name) <= 8:
+                return name
 
 
 if __name__ == '__main__':
     generator = Namegen()
-    print(generator.generate())
+    for i in xrange(100):
+        print(generator.generate_clean())
