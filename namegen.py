@@ -5,12 +5,10 @@ import cPickle as pickle
 
 PROB_PATH = 'prob.pickle'
 
-class Generator(object):
+class Namegen(object):
     def __init__(self):
-        home = os.path.expanduser("~")
-        file_path = os.path.join(home, "nltk_data", "corpora", "names", "male.txt")
         if not os.path.exists(PROB_PATH):
-            self.prob, self.sums = self.read_corpus(file_path)
+            self.prob, self.sums = self.read_corpus('male.txt')
             self.save_arrays()
         else:
             self.prob, self.sums = self.load_arrays()
@@ -75,5 +73,5 @@ class Generator(object):
 
 
 if __name__ == '__main__':
-    generator = Generator()
+    generator = Namegen()
     print(generator.generate())
