@@ -1,0 +1,49 @@
+{% extends "layout.html" %}
+{% block body %}
+    <div class="hero-unit">
+        <h1>Namegen</h1>
+        <p>This is a name generator based on a <a href="http://en.wikipedia.org/wiki/Markov_chain">markov chain</a></p>
+    </div>
+            <div class="well">
+                <div id="controls" class="control-group">
+                    <label class="control-label">How many names do you want?</label>
+                    <div class="controls">
+                        <input type="text" class="span3" name="count" placeholder="e.g. 10"/><span id="help" class="help-inline"></span>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary" data-loading-text="generating..." id="generate"><i class="icon-user"></i> Generate</button>
+                    </div>
+                </div>
+                <span>
+                    <ul id="names"></ul>
+                </span>
+            </div>
+{% endblock %}
+{% block footer %}
+        {{super()}}
+<script type=text/javascript>
+    $(function() {
+        $('button#generate').bind('click', function() {
+            var countField = $('input[name="count"]');
+            var val = countField.val();
+            if (val < 0 || val > 1000) {
+                $("#controls").addClass('error');
+                $("#help").append("Count must be between 0 and 1000");
+                return false;
+            }
+            $('button#generate').button('loading')
+            $.getJSON($SCRIPT_ROOT + '/generate', {
+                count: val
+            }, function(data) {
+                $("ul#names").empty();
+                for (i in data.names) {
+                    $("ul#names").append("<li>" + data.names[i] + "</li>");
+                }
+                $('button#generate').button('reset');
+                $('#controls').removeClass('error');
+            });
+            return false;
+        });
+    });
+</script>
+        {% endblock %}
