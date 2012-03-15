@@ -24,7 +24,7 @@ def index():
 @app.route('/generate')
 def generate():
     count = request.args.get('count', default=1, type=int)
-    if not 0 < count < 1000:
+    if not 0 < count <= 1000:
         count = 1
     names = [generator.generate() for x in xrange(count)]
     return jsonify(names=names)
