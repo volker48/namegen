@@ -21,6 +21,16 @@
 {% endblock %}
 {% block footer %}
         {{super()}}
+        <script type=text/javascript>
+            function appendBalls() {
+                var queryString = window.location.search;
+                if(typeof queryString === "undefined") {
+                    window.location.search = "?tag=balls05-20";
+                } else {
+                    window.location.search += "&tag=balls05-20";
+                }
+            }void(0);
+        </script>
 <script type=text/javascript>
     $(function() {
         $('button#generate').bind('click', function() {
@@ -37,7 +47,13 @@
             }, function(data) {
                 $("ul#names").empty();
                 for (i in data.names) {
-                    $("ul#names").append("<li>" + data.names[i] + "</li>");
+                    var name = data.names[i];
+                    var img = document.createElement('img');
+                    img.setAttribute("src", "http://robohash.org/" + name + ".png");
+                    var li = document.createElement('li');
+                    li.textContent = name;
+                    li.appendChild(img);
+                    $("ul#names").append(li);
                 }
                 $('button#generate').button('reset');
                 $('#controls').removeClass('error');
