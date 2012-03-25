@@ -2,7 +2,8 @@
 {% block body %}
     <div class="hero-unit">
         <h1>Namegen</h1>
-        <p>This is a name generator based on a <a href="http://en.wikipedia.org/wiki/Markov_chain">markov chain</a></p>
+        <p>This is a name generator based on a <a href="http://en.wikipedia.org/wiki/Markov_chain">markov chain</a> It
+        also uses <a href=="http://robohash.org/">robohash</a> to generate awesome robot pictures for the names.</p>
     </div>
             <div class="well">
                 <div id="controls" class="control-group">
@@ -21,16 +22,6 @@
 {% endblock %}
 {% block footer %}
         {{super()}}
-        <script type=text/javascript>
-            function appendBalls() {
-                var queryString = window.location.search;
-                if(typeof queryString === "undefined") {
-                    window.location.search = "?tag=balls05-20";
-                } else {
-                    window.location.search += "&tag=balls05-20";
-                }
-            }void(0);
-        </script>
 <script type=text/javascript>
     $(function() {
         $('button#generate').bind('click', function() {
